@@ -29,6 +29,7 @@ public class Panel_InGame : MonoBehaviour {
     int horizontalCount; // 几格
     int vertialCount;
 
+
     public void Ctor() {
         btnSize = 22;
         Img_Smile.gameObject.SetActive(true);
@@ -47,6 +48,8 @@ public class Panel_InGame : MonoBehaviour {
         Vector2 topGroupSize = topGruop.GetComponent<RectTransform>().sizeDelta;
         topGroupSize = new Vector2(width, topGroupSize.y);
         topGruop.GetComponent<RectTransform>().sizeDelta = topGroupSize;
+        mineCountTxt.GetComponent<Text>().text = "MineCount:" + mineCount.ToString();
+        timeTxt.GetComponent<Text>().text = "Time:";
 
 
         // Bg
@@ -142,6 +145,23 @@ public class Panel_InGame : MonoBehaviour {
         }
 
     }
+
+    internal void GetElement(int id) {
+        var ele = allElement[id];
+        ele.img_mineFalse.gameObject.SetActive(true);
+        ele.img_mineTrue.gameObject.SetActive(false);
+    }
+
+    internal void OpenAllBtn() {
+        for (int i = 0; i < allElement.Count; i++) {
+            var ele = allElement[i];
+            if (ele.isOpened) {
+                continue;
+            }
+            ele.Open();
+        }
+    }
+
 
     public void UpdateMine(int id) {
         var element = allElement[id];

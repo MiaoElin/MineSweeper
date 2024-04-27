@@ -21,7 +21,7 @@ public class ClientMain : MonoBehaviour/*, IPointerClickHandler*/ {
         Bind(ctx);
 
         // 打开游戏页面
-        GameBusiness.EnterGame(ctx.gamCtx, 16, 16, 40);
+        GameBusiness.EnterGame(ctx.gamCtx, 9, 9, 10);
 
     }
 
@@ -30,6 +30,8 @@ public class ClientMain : MonoBehaviour/*, IPointerClickHandler*/ {
         eventCenter.OnPanle_IngameBtnClickHandle += (int id, bool hasMine) => {
             // 有雷，游戏失败
             if (hasMine) {
+                // 按钮全翻开，点错的这个按钮显示红色底
+                UIDomain.Panel_InGame_DefeatUpdate(ctx.gamCtx, id);
                 ctx.gamCtx.fsmCom.isDefeat = hasMine;
                 ctx.gamCtx.fsmCom.EnterGameEnd(hasMine);
                 return;
@@ -39,6 +41,7 @@ public class ClientMain : MonoBehaviour/*, IPointerClickHandler*/ {
             bool isWin = UIDomain.Panel_InGame_IsWin(ctx.gamCtx);
             if (isWin) {
                 // 胜利页
+                UIDomain.Panel_InGame_OpenAllBtn(ctx.gamCtx);
                 ctx.gamCtx.fsmCom.EnterGameEnd(hasMine);
             }
         };
