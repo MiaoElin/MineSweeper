@@ -20,7 +20,8 @@ MonoBehaviour:
   - m_GUID: d7ebf78cbfea99e4193a64afd32fa1c5
     m_Address: Assets/ResourceRunTime/Panel/Panel_InGame/Panel_Ingame.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UI
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0121a2fde9cd04448bbd1b3b9756fcd0, type: 2}
