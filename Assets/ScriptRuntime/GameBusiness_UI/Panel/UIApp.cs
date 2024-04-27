@@ -10,7 +10,6 @@ public static class UIApp {
         var list = ptr.WaitForCompletion();
         foreach (var value in list) {
             ctx.UIsAdd(value.name, value);
-            Debug.Log(value.name);
         }
         ctx.uiPtr = ptr;
     }
@@ -25,20 +24,20 @@ public static class UIApp {
         Panel_InGame panel = ctx.panel_InGame;
         if (panel == null) {
             bool has = ctx.UIsTryGetValue(typeof(Panel_InGame).Name, out var prefab);
-            Debug.Log(has);
             panel = GameObject.Instantiate<GameObject>(prefab, ctx.screenCanvas.transform).GetComponent<Panel_InGame>();
             panel.Ctor();
         }
         panel.Init(horizontalCount, vertialCount, mineCount);
-        panel.onBtnClickHandle = () => { };
+        panel.onBtnClickHandle = (int id, bool hasMine) => { ctx.eventCenter.OnPanle_IngameBtnClick(id,hasMine); };
         panel.Show();
     }
 
-    public static void Panel_InGame_Tick(UIContext ctx) {
-
+    public static void Panel_InGame_UpdateMine(UIContext ctx, int id) {
+        Panel_InGame panel = ctx.panel_InGame;
+        panel?.UpdateMine(id);
     }
 
-    public static void Panel_Hide(UIContext ctx) {
+    public static void Panel_InGame_Hide(UIContext ctx) {
         Panel_InGame panel = ctx.panel_InGame;
         panel?.Hide();
     }

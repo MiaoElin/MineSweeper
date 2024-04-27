@@ -24,7 +24,7 @@ public class Panel_InGame : MonoBehaviour {
     [SerializeField] Panel_InGameElement prefab_btn;
     Dictionary<int, Panel_InGameElement> allBtn;
     public int btnSize;
-    public Action onBtnClickHandle;
+    public Action<int,bool> onBtnClickHandle;
 
     public void Ctor() {
         btnSize = 22;
@@ -85,7 +85,7 @@ public class Panel_InGame : MonoBehaviour {
             element.id = i;
             element.hasMine = false;
             element.btn.onClick.AddListener(() => {
-                onBtnClickHandle.Invoke();
+                onBtnClickHandle.Invoke(element.id,element.hasMine);
             });
             allBtn.Add(i, element);
         }
@@ -111,7 +111,9 @@ public class Panel_InGame : MonoBehaviour {
 
     }
 
-    // public void UpdateMine()
+    public void UpdateMine(int id) {
+        allBtn.TryGetValue(id, out var element);
+    }
 
     public void Close() {
         Destroy(gameObject);

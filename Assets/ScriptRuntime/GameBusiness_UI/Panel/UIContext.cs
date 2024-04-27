@@ -10,14 +10,16 @@ public class UIContext {
 
     public Canvas screenCanvas;
     public InputEntity input;
+    public UIEventCenter eventCenter;
 
     public UIContext() {
         UIs = new Dictionary<string, GameObject>();
-        input = new InputEntity();
     }
 
-    public void Inject(Canvas screenCanvas) {
+    public void Inject(Canvas screenCanvas, UIEventCenter eventCenter, InputEntity input) {
         this.screenCanvas = screenCanvas;
+        this.eventCenter = eventCenter;
+        this.input = input;
     }
 
     public void UIsAdd(string name, GameObject value) {
@@ -25,7 +27,6 @@ public class UIContext {
     }
 
     public bool UIsTryGetValue(string name, out GameObject value) {
-        Debug.Log(UIs.Count);
         return UIs.TryGetValue(name, out value);
     }
 
