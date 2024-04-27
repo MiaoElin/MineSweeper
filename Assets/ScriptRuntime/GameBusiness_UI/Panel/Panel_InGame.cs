@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class Panel_InGame : MonoBehaviour {
-    
+
     // TopGroup
     [SerializeField] Transform topGruop;
     [SerializeField] Text mineCountTxt;
@@ -27,10 +27,9 @@ public class Panel_InGame : MonoBehaviour {
     public Action onBtnClickHandle;
 
     public void Ctor() {
-        // btnSize = 22;
+        btnSize = 22;
         Img_Smile.gameObject.SetActive(true);
         Img_Defeat.gameObject.SetActive(false);
-        allBtn = new Dictionary<int, Panel_InGameElement>();
     }
 
     public void Init(int horizontalCount, int vertialCount, int mineCount) {
@@ -42,6 +41,7 @@ public class Panel_InGame : MonoBehaviour {
         topGroupSize = new Vector2(width, topGroupSize.y);
         topGruop.GetComponent<RectTransform>().sizeDelta = topGroupSize;
 
+
         // Bg
         RectTransform bgGroupRect = BgGruop.GetComponent<RectTransform>();
         Vector2 bgGroupSize = bgGroupRect.sizeDelta;
@@ -51,14 +51,20 @@ public class Panel_InGame : MonoBehaviour {
         // Prefab_Horizontal_line
         RectTransform prefab_Hor_Line = prefab_Horizontal_Line.GetComponent<RectTransform>();
         Vector2 hor_LineSize = prefab_Hor_Line.sizeDelta;
-        hor_LineSize.x = width;
+        hor_LineSize = new Vector2(2, height);
         prefab_Hor_Line.sizeDelta = hor_LineSize;
 
         // Prefab_Vertical_line
         RectTransform prefab_Ver_Line = prefab_Vertical_Line.GetComponent<RectTransform>();
         Vector2 ver_LineSize = prefab_Ver_Line.sizeDelta;
-        ver_LineSize.y = height;
+        ver_LineSize = new Vector2(width, 2);
         prefab_Ver_Line.sizeDelta = ver_LineSize;
+
+        // BtnGroup
+        RectTransform btnGroupRect = btnGroup.GetComponent<RectTransform>();
+        Vector2 btnGroupSize = btnGroupRect.sizeDelta;
+        btnGroupSize = new Vector2(width, height);
+        btnGroupRect.sizeDelta = btnGroupSize;
 
 
         int btnCount = horizontalCount * vertialCount;
@@ -73,6 +79,7 @@ public class Panel_InGame : MonoBehaviour {
         }
 
         // 生成Btn
+        allBtn = new Dictionary<int, Panel_InGameElement>();
         for (int i = 0; i < btnCount; i++) {
             Panel_InGameElement element = GameObject.Instantiate(prefab_btn, btnGroup);
             element.id = i;
@@ -104,5 +111,17 @@ public class Panel_InGame : MonoBehaviour {
 
     }
 
+    // public void UpdateMine()
+
+    public void Close() {
+        Destroy(gameObject);
+    }
+    public void Hide() {
+        gameObject.SetActive(false);
+    }
+
+    public void Show() {
+        gameObject.SetActive(true);
+    }
 
 }
