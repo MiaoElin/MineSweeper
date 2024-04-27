@@ -21,20 +21,26 @@ public class ClientMain : MonoBehaviour/*, IPointerClickHandler*/ {
         Bind(ctx);
 
         // 打开游戏页面
-        GameBusiness.EnterGame(ctx.gamCtx, 16, 16, 20);
+        GameBusiness.EnterGame(ctx.gamCtx, 16, 16, 40);
 
     }
 
     private void Bind(MainContext ctx) {
         var eventCenter = ctx.eventCenter;
         eventCenter.OnPanle_IngameBtnClickHandle += (int id, bool hasMine) => {
-             // 有雷，游戏失败
+            // 有雷，游戏失败
             if (hasMine) {
+                ctx.gamCtx.fsmCom.isDefeat = hasMine;
                 ctx.gamCtx.fsmCom.EnterGameEnd(hasMine);
                 return;
             }
             // 无雷，翻开按钮，如果该按钮无数字，说明四周无雷打开八个方向的按钮，打开的里面有无数字的，继续打开8个方向的按钮
-            
+            UIDomain.Panel_InGame_UpdateMine(ctx.gamCtx, id);
+            bool isWin = UIDomain.Panel_InGame_IsWin(ctx.gamCtx);
+            if (isWin) {
+                // 胜利页
+                ctx.gamCtx.fsmCom.EnterGameEnd(hasMine);
+            }
         };
     }
 

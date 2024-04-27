@@ -14,6 +14,15 @@ public static class UIDomain {
         UIApp.Panel_InGame_UpdateMine(ctx.uiCtx, id);
     }
 
+    public static void Panel_InGame_DefeatUpdate(GameContext ctx, int id) {
+        // todo
+        // 点的雷变红
+        // 将所有按钮翻开
+    }
+
+    public static bool Panel_InGame_IsWin(GameContext ctx) {
+        return UIApp.Panel_InGame_IsWin(ctx.uiCtx);
+    }
     public static void Panel_Result_Open(GameContext ctx, bool hasMine) {
         if (hasMine) {
             // 失败页
