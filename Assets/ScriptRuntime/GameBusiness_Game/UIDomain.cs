@@ -30,8 +30,12 @@ public static class UIDomain {
         UIApp.Panel_InGame_OpenAllBtn(ctx.uiCtx);
     }
 
-    public static void Panel_InGame_SetTime(GameContext ctx,float value) {
-        UIApp.Panel_InGame_SetTime(ctx.uiCtx,value);
+    public static void Panel_InGame_SetTime(GameContext ctx, float value) {
+        UIApp.Panel_InGame_SetTime(ctx.uiCtx, value);
+    }
+
+    public static bool FindNearlyButton(GameContext ctx, Vector2 mousePos, out Panel_InGameElement ele) {
+        return UIApp.FindNearlyButton(ctx.uiCtx, mousePos, out ele);
     }
     public static void Panel_Result_Open(GameContext ctx, bool hasMine) {
         if (hasMine) {

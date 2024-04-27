@@ -8,6 +8,9 @@ public class Panel_InGameElement : MonoBehaviour {
 
     [SerializeField] public Image img_mineTrue;
     [SerializeField] public Image img_mineFalse;
+    [SerializeField] public Image img_Flag;
+    public bool isFlaged;
+
     public int id;
     public int centerCount;
     public Text centetCountTxt;
@@ -19,7 +22,8 @@ public class Panel_InGameElement : MonoBehaviour {
         this.id = id;
         centerCount = 0;
         hasMine = false;
-        isOpened = false;
+        FlagClose();
+        Close();
     }
 
     public void Open() {
@@ -27,4 +31,18 @@ public class Panel_InGameElement : MonoBehaviour {
         btn.gameObject.SetActive(false);
     }
 
+    public void Close() {
+        isOpened = false;
+        btn.gameObject.SetActive(true);
+    }
+
+    public void FlagShow() {
+        isFlaged = true;
+        img_Flag.gameObject.SetActive(true);
+    }
+
+    public void FlagClose() {
+        isFlaged = false;
+        img_Flag.gameObject.SetActive(false);
+    }
 }

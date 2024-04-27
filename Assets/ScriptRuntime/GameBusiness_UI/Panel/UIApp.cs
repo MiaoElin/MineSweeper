@@ -57,6 +57,11 @@ public static class UIApp {
         Panel_InGame panel = ctx.panel_InGame;
         panel?.SetTime_Tick(value);
     }
+
+    public static bool FindNearlyButton(UIContext ctx, Vector2 mousePos, out Panel_InGameElement ele) {
+        Panel_InGame panel = ctx.panel_InGame;
+        return panel.FindNearlyButton(mousePos, out ele);
+    }
     public static void Panel_InGame_Hide(UIContext ctx) {
         Panel_InGame panel = ctx.panel_InGame;
         panel?.Hide();

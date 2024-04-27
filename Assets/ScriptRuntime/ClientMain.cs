@@ -21,7 +21,7 @@ public class ClientMain : MonoBehaviour/*, IPointerClickHandler*/ {
         Bind(ctx);
 
         // 打开游戏页面
-        GameBusiness.EnterGame(ctx.gamCtx, 9, 9, 10);
+        GameBusiness.EnterGame(ctx.gamCtx, 16, 16, 40);
 
     }
 

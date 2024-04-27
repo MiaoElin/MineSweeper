@@ -17,6 +17,19 @@ public static class GameBusiness {
             time += dt;
             UIDomain.Panel_InGame_SetTime(ctx, time);
 
+            // 点击鼠标右键竖旗
+            if (Input.GetMouseButtonDown(1)) {
+                bool has = UIDomain.FindNearlyButton(ctx, Input.mousePosition, out var ele);
+                if (has) {
+                    if (ele.isFlaged) {
+                        ele.FlagClose();
+                        return;
+                    }
+                    ele.FlagShow();
+                }
+
+            }
+
         } else if (fsm.status == GameStatus.GameEnd) {
             if (fsm.isEnteringGameEnd) {
                 fsm.isEnteringGameEnd = false;

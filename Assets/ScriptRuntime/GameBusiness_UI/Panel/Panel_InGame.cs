@@ -103,9 +103,9 @@ public class Panel_InGame : MonoBehaviour {
                 onBtnClickHandle.Invoke(element.id, element.hasMine);
             });
             // element.btn.gameObject.SetActive(false);
-            var color = element.btn.GetComponent<Image>().color;
-            color.a = 0.5f;
-            element.btn.GetComponent<Image>().color = color;
+            // var color = element.btn.GetComponent<Image>().color;
+            // color.a = 0.5f;
+            // element.btn.GetComponent<Image>().color = color;
             allElement.Add(i, element);
         }
 
@@ -135,14 +135,9 @@ public class Panel_InGame : MonoBehaviour {
             if (element.hasMine) {
                 continue;
             }
-            TryAddCenterCount(GetUp(i, out var ele1), ele1, element);
-            TryAddCenterCount(GetUpLeft(i, out var ele2), ele2, element);
-            TryAddCenterCount(GetUpRight(i, out var ele3), ele3, element);
-            TryAddCenterCount(GetLeft(i, out var ele4), ele4, element);
-            TryAddCenterCount(GetRight(i, btnCount, out var ele5), ele5, element);
-            TryAddCenterCount(getDownLeft(i, btnCount, out var ele6), ele6, element);
-            TryAddCenterCount(GetDown(i, btnCount, out var ele7), ele7, element);
-            TryAddCenterCount(GetdownRight(i, btnCount, out var ele8), ele8, element);
+
+            TryAddCenterCount(i, element);
+
             if (element.centerCount == 0) {
                 element.centetCountTxt.GetComponent<Text>().text = "";
             } else {
@@ -197,15 +192,9 @@ public class Panel_InGame : MonoBehaviour {
                 TryOpenBtn(true, ele);
             }
         }
-        // TryOpenBtn(GetUp(id, out var ele1), ele1);
-        // TryOpenBtn(GetUpLeft(id, out var ele2), ele2);
-        // TryOpenBtn(GetUpRight(id, out var ele3), ele3);
-        // TryOpenBtn(GetLeft(id, out var ele4), ele4);
-        // TryOpenBtn(GetRight(id, allElement.Count, out var ele5), ele5);
-        // TryOpenBtn(GetDown(id, allElement.Count, out var ele6), ele6);
-        // TryOpenBtn(GetdownRight(id, allElement.Count, out var ele7), ele7);
-        // TryOpenBtn(getDownLeft(id, allElement.Count, out var ele8), ele8);
     }
+
+
     void TryOpenBtn(bool hasEle, Panel_InGameElement ele) {
         // 揭开按钮
         if (hasEle) {
@@ -222,10 +211,26 @@ public class Panel_InGame : MonoBehaviour {
         }
     }
 
-    void TryAddCenterCount(bool hasEle, Panel_InGameElement element, Panel_InGameElement center) {
-        if (hasEle) {
-            if (element.hasMine) {
-                center.centerCount++;
+    void TryAddCenterCount(int id, Panel_InGameElement center) {
+        for (int x = -1; x <= 1; x += 1) {
+            for (int y = -1; y <= 1; y += 1) {
+                // 8 times
+                if (x == 0 && y == 0) {
+                    continue;
+                }
+                int neighborX = GetX(id) + x;
+                int neighborY = GetY(id) + y;
+                if (neighborX < 0 || neighborX >= horizontalCount) {
+                    continue;
+                }
+                if (neighborY < 0 || neighborY >= vertialCount) {
+                    continue;
+                }
+                int neighborIndex = GetIndex(neighborX, neighborY);
+                var ele = allElement[neighborIndex];
+                if (ele.hasMine) {
+                    center.centerCount++;
+                }
             }
         }
     }
@@ -341,6 +346,27 @@ public class Panel_InGame : MonoBehaviour {
         }
         element = null;
         return false;
+    }
+
+    public bool FindNearlyButton(Vector2 mousePos, out Panel_InGameElement element) {
+        element = null;
+        float neaarlyDistance = btnSize / 2 * btnSize / 2;
+        for (int i = 0; i < allElement.Count; i++) {
+            var ele = allElement[i];
+            if (ele.isOpened) {
+                continue;
+            }
+            float distanceCurrent = Vector2.SqrMagnitude(mousePos - (Vector2)ele.transform.position);
+            if (distanceCurrent <= neaarlyDistance) {
+                neaarlyDistance = distanceCurrent;
+                element = ele;
+            }
+        }
+        if (element == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void Close() {
