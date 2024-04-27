@@ -54,8 +54,10 @@ public class ClientMain : MonoBehaviour/*, IPointerClickHandler*/ {
         // input
         ctx.input.Process();
 
+        float dt = Time.deltaTime;
+
         // GameBusinessTick
-        GameBusiness.Tick(ctx.gamCtx);
+        GameBusiness.Tick(ctx.gamCtx, dt);
     }
     // public void OnPointerClick(PointerEventData eventData) {
     //     if (eventData.button == PointerEventData.InputButton.Right) {

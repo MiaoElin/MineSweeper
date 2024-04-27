@@ -53,6 +53,10 @@ public static class UIApp {
         return panel.IsWin();
     }
 
+    public static void Panel_InGame_SetTime(UIContext ctx, float value) {
+        Panel_InGame panel = ctx.panel_InGame;
+        panel?.SetTime_Tick(value);
+    }
     public static void Panel_InGame_Hide(UIContext ctx) {
         Panel_InGame panel = ctx.panel_InGame;
         panel?.Hide();

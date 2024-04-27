@@ -7,12 +7,15 @@ public static class GameBusiness {
         ctx.fsmCom.EnterInGame();
     }
 
-    public static void Tick(GameContext ctx) {
+    public static void Tick(GameContext ctx, float dt) {
         var fsm = ctx.fsmCom;
+        ref var time = ref ctx.uiCtx.panel_InGame.timeValue;
         if (fsm.status == GameStatus.Ingame) {
             if (fsm.isEnteringGame) {
                 fsm.isEnteringGame = false;
             }
+            time += dt;
+            UIDomain.Panel_InGame_SetTime(ctx, time);
 
         } else if (fsm.status == GameStatus.GameEnd) {
             if (fsm.isEnteringGameEnd) {

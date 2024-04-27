@@ -30,6 +30,9 @@ public static class UIDomain {
         UIApp.Panel_InGame_OpenAllBtn(ctx.uiCtx);
     }
 
+    public static void Panel_InGame_SetTime(GameContext ctx,float value) {
+        UIApp.Panel_InGame_SetTime(ctx.uiCtx,value);
+    }
     public static void Panel_Result_Open(GameContext ctx, bool hasMine) {
         if (hasMine) {
             // 失败页

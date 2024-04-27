@@ -12,6 +12,8 @@ public class Panel_InGame : MonoBehaviour {
     [SerializeField] Image Img_Defeat;
     [SerializeField] Text timeTxt;
 
+    public float timeValue;
+
     // BgGroup
     [SerializeField] Transform BgGruop;
     [SerializeField] Image prefab_Vertical_Line;
@@ -31,11 +33,15 @@ public class Panel_InGame : MonoBehaviour {
 
 
     public void Ctor() {
+        timeValue = 0;
         btnSize = 22;
         Img_Smile.gameObject.SetActive(true);
         Img_Defeat.gameObject.SetActive(false);
     }
 
+    public void SetTime_Tick(float value) {
+        timeTxt.GetComponent<Text>().text = "Time:" + value.ToString("F1");
+    }
     public void Init(int horizontalCount, int vertialCount, int mineCount) {
 
         this.horizontalCount = horizontalCount;
@@ -49,7 +55,7 @@ public class Panel_InGame : MonoBehaviour {
         topGroupSize = new Vector2(width, topGroupSize.y);
         topGruop.GetComponent<RectTransform>().sizeDelta = topGroupSize;
         mineCountTxt.GetComponent<Text>().text = "MineCount:" + mineCount.ToString();
-        timeTxt.GetComponent<Text>().text = "Time:";
+
 
 
         // Bg
