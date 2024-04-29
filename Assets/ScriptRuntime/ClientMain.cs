@@ -37,8 +37,9 @@ public class ClientMain : MonoBehaviour/*, IPointerClickHandler*/ {
                 return;
             }
             // 无雷，翻开按钮，如果该按钮无数字，说明四周无雷打开八个方向的按钮，打开的里面有无数字的，继续打开8个方向的按钮
-            UIDomain.Panel_InGame_UpdateMine(ctx.gamCtx, id);
-            bool isWin = UIDomain.Panel_InGame_IsWin(ctx.gamCtx);
+            GridDomain.UpdateMine(ctx.gamCtx, id);
+            UIDomain.Panel_InGame_UpdateElements(ctx.gamCtx, ctx.gamCtx.gridRepo);
+            bool isWin = GridDomain.IsWin(ctx.gamCtx);
             if (isWin) {
                 // 胜利页
                 UIDomain.Panel_InGame_OpenAllBtn(ctx.gamCtx);

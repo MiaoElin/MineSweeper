@@ -29,7 +29,7 @@ public class Panel_InGame : MonoBehaviour {
     public Action<int, bool> onBtnClickHandle;
 
     int horizontalCount; // 几格
-    int vertialCount;
+    int verticalCount;
 
 
     public void Ctor() {
@@ -42,14 +42,14 @@ public class Panel_InGame : MonoBehaviour {
     public void SetTime_Tick(float value) {
         timeTxt.GetComponent<Text>().text = "Time:" + value.ToString("F1");
     }
-    public void Init(int horizontalCount, int vertialCount, int mineCount) {
+    public void Init(int horizontalCount, int verticalCount, int mineCount) {
 
         this.horizontalCount = horizontalCount;
-        this.vertialCount = vertialCount;
+        this.verticalCount = verticalCount;
 
         // 尺寸更新
         int width = horizontalCount * btnSize;
-        int height = vertialCount * btnSize;
+        int height = verticalCount * btnSize;
         // TopGroup
         Vector2 topGroupSize = topGruop.GetComponent<RectTransform>().sizeDelta;
         topGroupSize = new Vector2(width, topGroupSize.y);
@@ -83,14 +83,14 @@ public class Panel_InGame : MonoBehaviour {
         btnGroupRect.sizeDelta = btnGroupSize;
 
 
-        int btnCount = horizontalCount * vertialCount;
+        int btnCount = horizontalCount * verticalCount;
         // 生成Horizontal Line
         for (int i = 0; i < horizontalCount; i++) {
             GameObject.Instantiate(prefab_Horizontal_Line, horizontalLine_Group);
         }
 
         // 生成Vertical Line
-        for (int i = 0; i < vertialCount; i++) {
+        for (int i = 0; i < verticalCount; i++) {
             GameObject.Instantiate(prefab_Vertical_Line, vertialLine_Group);
         }
 
@@ -103,51 +103,14 @@ public class Panel_InGame : MonoBehaviour {
                 onBtnClickHandle.Invoke(element.id, element.hasMine);
             });
             // element.btn.gameObject.SetActive(false);
-            // var color = element.btn.GetComponent<Image>().color;
-            // color.a = 0.5f;
-            // element.btn.GetComponent<Image>().color = color;
+            var color = element.btn.GetComponent<Image>().color;
+            color.a = 0.5f;
+            element.btn.GetComponent<Image>().color = color;
             allElement.Add(i, element);
         }
-
-        // 生成雷
-        int[] mines = new int[mineCount];
-        int addCount = 0;
-        while (addCount < mineCount) {
-            int id = UnityEngine.Random.Range(0, btnCount - 1);
-            if (Array.Exists<int>(mines, value => value == id)) {
-                continue;
-            }
-            mines[addCount] = id;
-            addCount++;
-        }
-
-        // 设置雷
-        for (int i = 0; i < mineCount; i++) {
-            var id = mines[i];
-            allElement.TryGetValue(id, out var element);
-            element.hasMine = true;
-            element.img_mineTrue.gameObject.SetActive(true);
-        }
-
-        // 设置数字
-        for (int i = 0; i < btnCount; i++) {
-            var element = allElement[i];
-            if (element.hasMine) {
-                continue;
-            }
-
-            TryAddCenterCount(i, element);
-
-            if (element.centerCount == 0) {
-                element.centetCountTxt.GetComponent<Text>().text = "";
-            } else {
-                element.centetCountTxt.GetComponent<Text>().text = element.centerCount.ToString();
-            }
-        }
-
     }
 
-    internal void GetElement(int id) {
+    internal void GetMineBrok(int id) {
         var ele = allElement[id];
         ele.img_mineFalse.gameObject.SetActive(true);
         ele.img_mineTrue.gameObject.SetActive(false);
@@ -163,91 +126,36 @@ public class Panel_InGame : MonoBehaviour {
         }
     }
 
-
-    public void UpdateMine(int id) {
-        var element = allElement[id];
-        element.Open();
-        if (element.centerCount == 0) {
-            TryOpenAroundBtn(id);
+    public void Init(int id, int centerCount, bool hasMine) {
+        var ele = allElement[id];
+        ele.centerCount = centerCount;
+        if (centerCount == 0) {
+            ele.centetCountTxt.GetComponent<Text>().text = "";
+        } else {
+            ele.centetCountTxt.GetComponent<Text>().text = centerCount.ToString();
         }
-    }
 
-    public void TryOpenAroundBtn(int id) {
-        for (int x = -1; x <= 1; x += 1) {
-            for (int y = -1; y <= 1; y += 1) {
-                // 8 times
-                if (x == 0 && y == 0) {
-                    continue;
-                }
-                int neighborX = GetX(id) + x;
-                int neighborY = GetY(id) + y;
-                if (neighborX < 0 || neighborX >= horizontalCount) {
-                    continue;
-                }
-                if (neighborY < 0 || neighborY >= vertialCount) {
-                    continue;
-                }
-                int neighborIndex = GetIndex(neighborX, neighborY);
-                var ele = allElement[neighborIndex];
-                TryOpenBtn(true, ele);
-            }
+        if (hasMine) {
+            ele.MineTrueShow();
         }
+
     }
+    public void UpdateElements(int id, int centerCount, bool hasMine, bool isFlaged, bool isOpened) {
+        var ele = allElement[id];
 
+        ele.hasMine = hasMine;
 
-    void TryOpenBtn(bool hasEle, Panel_InGameElement ele) {
-        // 揭开按钮
-        if (hasEle) {
-            if (ele.hasMine) {
-                return;
-            }
-            bool isOpened = ele.isOpened;
-            if (!isOpened) {
-                ele.Open();
-                if (ele.centerCount == 0) {
-                    TryOpenAroundBtn(ele.id);
-                }
-            }
+        if (isFlaged) {
+        } else {
+            ele.FlagClose();
         }
-    }
-
-    void TryAddCenterCount(int id, Panel_InGameElement center) {
-        for (int x = -1; x <= 1; x += 1) {
-            for (int y = -1; y <= 1; y += 1) {
-                // 8 times
-                if (x == 0 && y == 0) {
-                    continue;
-                }
-                int neighborX = GetX(id) + x;
-                int neighborY = GetY(id) + y;
-                if (neighborX < 0 || neighborX >= horizontalCount) {
-                    continue;
-                }
-                if (neighborY < 0 || neighborY >= vertialCount) {
-                    continue;
-                }
-                int neighborIndex = GetIndex(neighborX, neighborY);
-                var ele = allElement[neighborIndex];
-                if (ele.hasMine) {
-                    center.centerCount++;
-                }
-            }
+        if (isOpened) {
+            ele.Open();
         }
     }
 
 
-    public bool IsWin() {
-        for (int i = 0; i < allElement.Count; i++) {
-            var ele = allElement[i];
-            if (ele.hasMine) {
-                continue;
-            }
-            if (ele.isOpened == false) {
-                return false;
-            }
-        }
-        return true;
-    }
+
     bool GetUp(int id, out Panel_InGameElement element) {
         int i = id - 16;
         if (i >= 0) {

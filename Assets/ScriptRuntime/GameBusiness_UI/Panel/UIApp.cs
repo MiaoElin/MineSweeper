@@ -33,9 +33,20 @@ public static class UIApp {
         ctx.panel_InGame = panel;
     }
 
+
+
+
+
+
+
+
+
+
+
+
     internal static void Panel_InGame_SetDefeatElement(UIContext uiCtx, int id) {
         Panel_InGame panel = uiCtx.panel_InGame;
-        panel.GetElement(id);
+        panel.GetMineBrok(id);
     }
 
     internal static void Panel_InGame_OpenAllBtn(UIContext uiCtx) {
@@ -43,15 +54,6 @@ public static class UIApp {
         panel?.OpenAllBtn();
     }
 
-    public static void Panel_InGame_UpdateMine(UIContext ctx, int id) {
-        Panel_InGame panel = ctx.panel_InGame;
-        panel?.UpdateMine(id);
-    }
-
-    public static bool Panel_InGame_IsWin(UIContext ctx) {
-        Panel_InGame panel = ctx.panel_InGame;
-        return panel.IsWin();
-    }
 
     public static void Panel_InGame_SetTime(UIContext ctx, float value) {
         Panel_InGame panel = ctx.panel_InGame;

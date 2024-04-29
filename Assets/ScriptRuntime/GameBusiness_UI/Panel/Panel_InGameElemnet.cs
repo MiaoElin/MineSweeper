@@ -45,4 +45,15 @@ public class Panel_InGameElement : MonoBehaviour {
         isFlaged = false;
         img_Flag.gameObject.SetActive(false);
     }
+
+    public void MineTrueShow() {
+        hasMine = true;
+        img_mineTrue.gameObject.SetActive(true);
+    }
+
+    public void MineFalseShow() {
+        hasMine = true;
+        img_mineTrue.gameObject.SetActive(false);
+        img_mineFalse.gameObject.SetActive(true);
+    }
 }

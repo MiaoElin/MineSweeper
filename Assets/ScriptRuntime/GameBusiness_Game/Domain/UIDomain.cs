@@ -6,12 +6,24 @@ public static class UIDomain {
         UIApp.Panel_InGame_Open(ctx.uiCtx, horizontalCount, vertialCount, mineCount);
     }
 
-    public static void Panel_InGame_Hide(GameContext ctx) {
-        UIApp.Panel_InGame_Hide(ctx.uiCtx);
+    public static void Panel_Init(GameContext ctx, GridRepo gridRepo) {
+        Panel_InGame panel = ctx.uiCtx.panel_InGame;
+
+        gridRepo.Foreach((grid) => {
+            panel.Init(grid.index, grid.centerCount, grid.hasMine);
+        });
     }
 
-    public static void Panel_InGame_UpdateMine(GameContext ctx, int id) {
-        UIApp.Panel_InGame_UpdateMine(ctx.uiCtx, id);
+    public static void Panel_InGame_UpdateElements(GameContext ctx, GridRepo gridRepo) {
+        Panel_InGame panel = ctx.uiCtx.panel_InGame;
+
+        gridRepo.Foreach((grid) => {
+            panel.UpdateElements(grid.index, grid.centerCount, grid.hasMine, grid.isFlaged, grid.isOpened);
+        });
+    }
+
+    public static void Panel_InGame_Hide(GameContext ctx) {
+        UIApp.Panel_InGame_Hide(ctx.uiCtx);
     }
 
     public static void Panel_InGame_DefeatUpdate(GameContext ctx, int id) {
@@ -20,10 +32,6 @@ public static class UIDomain {
         UIApp.Panel_InGame_SetDefeatElement(ctx.uiCtx, id);
         // 将所有按钮翻开
         Panel_InGame_OpenAllBtn(ctx);
-    }
-
-    public static bool Panel_InGame_IsWin(GameContext ctx) {
-        return UIApp.Panel_InGame_IsWin(ctx.uiCtx);
     }
 
     public static void Panel_InGame_OpenAllBtn(GameContext ctx) {

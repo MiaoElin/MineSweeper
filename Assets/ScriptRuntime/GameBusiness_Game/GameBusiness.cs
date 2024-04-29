@@ -3,7 +3,9 @@ using UnityEngine;
 public static class GameBusiness {
 
     public static void EnterGame(GameContext ctx, int horizontalCount, int vertialCount, int mineCount) {
+        GridDomain.SetGrid(ctx, horizontalCount, vertialCount, mineCount);
         UIDomain.Panel_InGame_Open(ctx, horizontalCount, vertialCount, mineCount);
+        UIDomain.Panel_Init(ctx, ctx.gridRepo);
         ctx.fsmCom.EnterInGame();
     }
 
